@@ -20,6 +20,10 @@ def search_by_rating(rating):
     return search_movies_by_rating(rating)
 
 
+@app.get('/genre/<genre>')
+def search_by_genre(genre):
+    return search_movies_by_genre(genre)
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=8080, debug=True)
