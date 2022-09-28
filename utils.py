@@ -1,7 +1,6 @@
 import sqlite3
 
 
-
 def get_value_from_db(query: str):
     with sqlite3.connect("netflix.db") as connection:
         connection.row_factory = sqlite3.Row
@@ -26,12 +25,33 @@ def search_movie_by_year(year_from, year_to):
     query = f"""
         SELECT release_year, title 
         FROM netflix
-        WHERE release_year > {year_from} and release_year < {year_to}
+        WHERE release_year >= {year_from} and release_year =< {year_to}
         LIMIT 100
         """
     result = get_value_from_db(query)
     list_of_movies = []
     for item in result:
-        result = dict(item)
-        list_of_movies.append(result)
+        list_of_movies.append(dict(item))
+    return list_of_movies
+
+
+def search_movies_by_rating(group):
+    dictt = {
+        'children': ('G', 'G'),
+        'family': ('G', 'PG', 'PG-13'),
+        'adult': ('R', 'NC-17')
+    }
+
+    query = f"""
+          SELECT title, rating, description
+          FROM netflix
+          WHERE rating in {dictt.get(group)}
+
+          """
+
+    result = get_value_from_db(query)
+    list_of_movies = []
+    for item in result:
+        list_of_movies.append(dict(item))
+
     return list_of_movies
